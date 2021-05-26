@@ -14,29 +14,35 @@ class Place: Object {
     @objc dynamic var type: String?
     @objc dynamic var imageData: Data?
 
-    
-       let barbershopNames = [
-           "Бошки Studio", "Bravada", "Big Bro",
-           "Crop Stop", "Провинция",
-           "1875", "Лось и ножницы",
-           "Sharp", "Borodach", "Brutal Guys"]
-    
-    func savePlace() {
-     
-        
-        for barbershop in barbershopNames {
-            let image = UIImage(named: barbershop)
-            guard let imageData = image?.pngData() else {return}
-            
-            let newPlace = Place()
-            newPlace.name = barbershop
-            newPlace.location = "Barnaul"
-            newPlace.type = "Barbershop"
-            newPlace.imageData = imageData
-            
-            StorageManager.saveObject(newPlace)
-        }
-        
-        
+    convenience init(name: String, location: String?, type: String?, imageData: Data?) {
+        self.init()
+        self.name = name
+        self.location = location
+        self.type = type
+        self.imageData = imageData
     }
+//       let barbershopNames = [
+//           "Бошки Studio", "Bravada", "Big Bro",
+//           "Crop Stop", "Провинция",
+//           "1875", "Лось и ножницы",
+//           "Sharp", "Borodach", "Brutal Guys"]
+//
+//    func savePlace() {
+//
+//
+//        for barbershop in barbershopNames {
+//            let image = UIImage(named: barbershop)
+//            guard let imageData = image?.pngData() else {return}
+//
+//            let newPlace = Place()
+//            newPlace.name = barbershop
+//            newPlace.location = "Barnaul"
+//            newPlace.type = "Barbershop"
+//            newPlace.imageData = imageData
+//
+//            StorageManager.saveObject(newPlace)
+//        }
+//
+//
+//    }
 }

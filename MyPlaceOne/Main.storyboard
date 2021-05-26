@@ -11,13 +11,13 @@
         <!--Barbershops-->
         <scene sceneID="k0m-7A-bh4">
             <objects>
-                <tableViewController id="dDV-n2-x5V" customClass="MainViewController" customModule="MyPlaceTwo" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="dDV-n2-x5V" customClass="MainViewController" customModule="MyPlaceOne" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="85" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="OUJ-c4-Own">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="rUa-4q-3ei" customClass="CustomTableViewCell" customModule="MyPlaceTwo" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="rUa-4q-3ei" customClass="CustomTableViewCell" customModule="MyPlaceOne" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="24.5" width="414" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rUa-4q-3ei" id="FiQ-HY-6Dy">
@@ -92,7 +92,7 @@
         <!--New Place-->
         <scene sceneID="pKv-Lx-RHW">
             <objects>
-                <tableViewController id="bnx-28-oa9" customClass="NewPlaceViewController" customModule="MyPlaceTwo" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="bnx-28-oa9" customClass="NewPlaceViewController" customModule="MyPlaceOne" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="BMe-fy-9if">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

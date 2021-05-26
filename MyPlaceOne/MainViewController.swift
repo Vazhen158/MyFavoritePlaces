@@ -6,55 +6,65 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UITableViewController {
     
 
     
-   // var barbershop = Place.getBarbershop()
+    var barbershop: Results<Place>! // Results это автообновляемый тип контейнера, который запрашивает объекты, позволяет работать с данными в реальном времени.
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        barbershop = realm.objects(Place.self)
 
+        
        
     }
 
     // MARK: - Table view data source
 
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//
-//    return barbershop.count
-//    }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+        return barbershop.isEmpty ? 0 : barbershop.count
+  }
 
    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
-//
-//        let place = barbershop[indexPath.row]
-//
-//        cell.nameLabel?.text = place.name
-//        cell.locationLabel.text = place.location
-//        cell.typeLabel.text = place.type
-//
-//        if place.image == nil {
-//            cell.imageOfBarbershop?.image = UIImage(named: place.barbershopImage!)
-//        } else {
-//            cell.imageOfBarbershop.image = place.image
-//        }
-//
-//
-////        cell.imageOfBarbershop?.image = UIImage(named: barbershop[indexPath.row].barbershopImage!)
-//        cell.imageOfBarbershop?.layer.cornerRadius = cell.imageOfBarbershop.frame.size.height / 2 //круглые иконки
-//        cell.imageOfBarbershop?.clipsToBounds = true
-//        return cell
-//    }
-//    // MARK: - Table view delegate
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 85
-//    }
-   
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
+        let place = barbershop[indexPath.row]
+
+        cell.nameLabel?.text = place.name
+        cell.locationLabel.text = place.location
+        cell.typeLabel.text = place.type
+        cell.imageOfBarbershop.image = UIImage(data: place.imageData!)
+
+        cell.imageOfBarbershop?.layer.cornerRadius = cell.imageOfBarbershop.frame.size.height / 2 //круглые иконки
+        cell.imageOfBarbershop?.clipsToBounds = true
+       return cell
+   }
+    
+    
+   // MARK: - Table view delegate
+// метод для вызова ячейки меню свайпом c право на лево
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let place = barbershop[indexPath.row]
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (_, _) in
+            
+            StorageManager.deleteObject(place)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+        }
+        
+        return [deleteAction]
+    }
+
+    
+    
     
 
     /*
@@ -70,7 +80,7 @@ class MainViewController: UITableViewController {
         guard let newPlaceVC = segue.source as? NewPlaceViewController else {return}
         
         newPlaceVC.saveNewPlace()
-       // barbershop.append(newPlaceVC.newPlace!)
+    
         tableView.reloadData() // метод обновляет интерфейс
         
     }

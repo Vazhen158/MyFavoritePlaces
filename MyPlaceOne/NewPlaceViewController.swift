@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
     
-    var newPlace =  Place()
+   
     var imageIsChanged = false
     
 
@@ -25,12 +25,12 @@ class NewPlaceViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {     // вщзможность делать запись в фоновом потоке
-            self.newPlace.savePlace()
+//        DispatchQueue.main.async {     // вщзможность делать запись в фоновом потоке
+//            self.newPlace.savePlace()
             
-        }
+ //       }
         
-        newPlace.savePlace()
+//        newPlace.savePlace()
 
         tableView.tableFooterView = UIView() // убирает разлиновку на экране, где нет строк с контентом
         saveButton.isEnabled = false // при переходе на экран добавления по умолчанию кнопка будет отключена
@@ -94,6 +94,8 @@ extension NewPlaceViewController: UITextFieldDelegate {
     }
     func saveNewPlace() {
        
+       
+        
         var image: UIImage?
         if imageIsChanged {
             image = placeImage.image
@@ -102,7 +104,10 @@ extension NewPlaceViewController: UITextFieldDelegate {
         image = #imageLiteral(resourceName: "scissors")
         }
         
-     //   newPlace = Place(name: placeName.text!, location: placeLocation.text, type: placeType.text, image: image, barbershopImage: nil)
+        let imageData = image?.pngData()
+        
+        let  newPlace = Place(name: placeName.text!, location: placeLocation.text, type: placeType.text, imageData: imageData)
+        StorageManager.saveObject(newPlace)
     }
 }
 //MARK: Work with image
