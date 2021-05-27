@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
     
-   
+    var currrentPlace: Place?
     var imageIsChanged = false
     
 
@@ -34,8 +34,10 @@ class NewPlaceViewController: UITableViewController {
 
         tableView.tableFooterView = UIView() // убирает разлиновку на экране, где нет строк с контентом
         saveButton.isEnabled = false // при переходе на экран добавления по умолчанию кнопка будет отключена
-        
+        setupEditScreen()
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
+       
         
     }
 
@@ -69,6 +71,62 @@ class NewPlaceViewController: UITableViewController {
             view.endEditing(true) // скрытие клавиатуры по тапу на экран
         }
     }
+    func savePlace() {
+        
+       
+        var image: UIImage?
+        if imageIsChanged {
+            image = placeImage.image
+            
+        } else {
+        image = #imageLiteral(resourceName: "scissors")
+        }
+        
+        let imageData = image?.pngData()
+        
+        let  newPlace = Place(name: placeName.text!, location: placeLocation.text, type: placeType.text, imageData: imageData)
+        if currrentPlace != nil {
+            try! realm.write {
+                currrentPlace?.name = newPlace.name
+                currrentPlace?.location = newPlace.location
+                currrentPlace?.type = newPlace.type
+                currrentPlace?.imageData = newPlace.imageData
+                
+            }
+                
+                
+        } else {
+            StorageManager.saveObject(newPlace)
+        }
+        
+        
+        
+    }
+    private func setupEditScreen() {   //метод для редактирования существующей записи
+        if currrentPlace != nil {
+            setupNavigationBar()
+            imageIsChanged = true
+            guard let data = currrentPlace?.imageData, let image = UIImage(data: data) else {return}
+            
+            placeImage.image = image
+            
+            placeImage.contentMode = .scaleAspectFill //данное свойство меняет размер изображения в окне редактирования
+            placeName.text = currrentPlace?.name
+            placeLocation.text = currrentPlace?.location
+            placeType.text = currrentPlace?.type
+            
+        }
+        
+    }
+    private func setupNavigationBar() {
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        }
+        navigationItem.leftBarButtonItem = nil
+        title = currrentPlace?.name
+        saveButton.isEnabled = true
+        
+    }
 
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
@@ -92,23 +150,9 @@ extension NewPlaceViewController: UITextFieldDelegate {
             saveButton.isEnabled = false
         }
     }
-    func saveNewPlace() {
-       
-       
-        
-        var image: UIImage?
-        if imageIsChanged {
-            image = placeImage.image
-            
-        } else {
-        image = #imageLiteral(resourceName: "scissors")
-        }
-        
-        let imageData = image?.pngData()
-        
-        let  newPlace = Place(name: placeName.text!, location: placeLocation.text, type: placeType.text, imageData: imageData)
-        StorageManager.saveObject(newPlace)
-    }
+  
+    
+   
 }
 //MARK: Work with image
 extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
