@@ -8,12 +8,19 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UITableViewController {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
 
+   
+    @IBOutlet var tableView: UITableView!
+    
+    
+    @IBOutlet var segmentedControl: UISegmentedControl!
+    
+    @IBOutlet var reversedSortingButton: UIBarButtonItem!
     
     var barbershop: Results<Place>! // Results это автообновляемый тип контейнера, который запрашивает объекты, позволяет работать с данными в реальном времени.
-    
+    var ascendingSorting = true
     
 
     override func viewDidLoad() {
@@ -26,13 +33,13 @@ class MainViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return barbershop.isEmpty ? 0 : barbershop.count
   }
 
    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
         let place = barbershop[indexPath.row]
@@ -51,7 +58,7 @@ class MainViewController: UITableViewController {
    // MARK: - Table view delegate
 // метод для вызова ячейки меню свайпом c право на лево
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let place = barbershop[indexPath.row]
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (_, _) in
             
@@ -88,5 +95,32 @@ class MainViewController: UITableViewController {
     
         tableView.reloadData() // метод обновляет интерфейс
         
+    }
+    
+    
+    @IBAction func sortSelection(_ sender: UISegmentedControl) {
+       sorting()
+        
+    }
+    
+    @IBAction func reversedSorting(_ sender: UIBarButtonItem) {
+        
+        ascendingSorting.toggle()
+        if ascendingSorting {
+            reversedSortingButton.image = #imageLiteral(resourceName: "AZ")
+        } else {
+            reversedSortingButton.image = #imageLiteral(resourceName: "ZA")
+        }
+        
+        sorting()
+        
+    }
+    private func sorting() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            barbershop = barbershop.sorted(byKeyPath: "date", ascending: ascendingSorting)
+        } else {
+            barbershop = barbershop.sorted(byKeyPath: "name", ascending: ascendingSorting)
+        }
+        tableView.reloadData()
     }
 }
